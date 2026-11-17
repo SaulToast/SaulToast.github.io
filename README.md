@@ -66,6 +66,8 @@ Optional `role`, `team`, `status`, and `period` fields appear in the metadata on
 
 ## Add screenshots and videos
 
+Contact destinations are configured separately in `src/data/contact.ts`; see the contact section below.
+
 The project hero always displays the supplied cover at its original aspect ratio. The separate gallery supports full-width images and videos, with captions below. It shows an explicit placeholder until approved media is added. Text is 18px on desktop and 17px on phones, with a readable line length.
 
 Add a `media` list to the Markdown frontmatter. This is a **format example**, not real footage or project information; substitute existing, approved files before using it:
@@ -92,6 +94,19 @@ media:
 Images and posters resolve relative to the Markdown file and are optimized by Astro. Put local video and WebVTT files under `public/media/`; reference them as `/media/...`. HTTPS video sources also work. Supply accurate captions/transcripts for speech or important audio; omit `tracks` when not applicable. The player uses native controls, a poster, and `preload="none"`. It never autoplays, including when looping, and offers a direct video link. No dummy media files or sources are included.
 
 Keep personally implemented features distinct from team accomplishments. Do not promote speculative topics from the spec into claims. Unknown credits, dates, project status, metrics, and contact details remain unset. The images are labeled accurately as a menu screenshot and an environment illustration, not gameplay demonstrations.
+
+## Contact and résumé
+
+The header has a prominent **Contact** button on every page. It links to the homepage's `#contact` section, which contains large Email, LinkedIn, and Résumé cards. The footer also links there, including from project pages.
+
+Set approved public destinations in `src/data/contact.ts`:
+
+- `email`: the public email address, without `mailto:`.
+- `linkedin`: the complete HTTPS profile URL.
+- `resume`: an HTTPS document URL or a root-relative PDF path such as `/resume.pdf` (place the real PDF in `public/resume.pdf`).
+- `github`: an optional HTTPS public profile URL; its card appears only when supplied.
+
+Leave missing values `null`. They appear as labeled, non-interactive placeholders; no empty or invented links are emitted. Adding a destination automatically turns its card into a link. Email opens the visitor's mail application; résumé and profile links use normal browser navigation. No contact form backend is needed.
 
 ## Visual direction
 

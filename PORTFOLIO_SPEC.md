@@ -465,6 +465,17 @@ The owner reviewed the first homepage and approved the general palette/layout, g
 
 The Milestone A-only prompt below is historical; this review authorizes the reusable project-page work in Milestone B.
 
+### Contact prominence follow-up
+
+The owner requested more prominent email, LinkedIn, résumé, and related contact destinations. The implementation uses a dedicated homepage contact section, a prominent Contact button in the shared header, and a footer contact link. Public destinations are configured in `src/data/contact.ts`. Missing destinations remain labeled, non-interactive placeholders; no email address or profile URL is inferred.
+
+Confirmed public contact destinations supplied by the owner:
+
+- Email: `saul.n.hanson@gmail.com`
+- LinkedIn: `https://www.linkedin.com/in/saul-hanson-875188440`
+- GitHub: `https://github.com/SaulToast`
+- Résumé: the supplied `saul_hanson_resume.pdf`, served locally as `/resume.pdf`.
+
 ## Appendix B — Initial prompt to give a coding agent
 
 > Read `PORTFOLIO_SPEC.md` and inspect the images in `references/`. Implement **Milestone A only**: a responsive Astro homepage with the specified color system, concise hero, navigation, two large featured project cards using the supplied reference artwork, and tasteful motion with accessibility fallbacks. Keep project content modular for later integration with an Astro content collection. Do not invent content or expose private game repositories. Run the build and explain how to preview the site. Stop after Milestone A and report which design choices need review.
