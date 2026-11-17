@@ -1,33 +1,103 @@
+---
+// Stable positions keep the decorative field identical across builds and resizes.
+const layers = [
+  { name: 'far', count: 90, radius: 0.75, opacity: 0.27 },
+  { name: 'middle', count: 54, radius: 0.95, opacity: 0.34 },
+  { name: 'near', count: 28, radius: 1.2, opacity: 0.4 },
+];
+const coordinate = (seed: number) => {
+  const value = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
+  return value - Math.floor(value);
+};
+---
 <div class="ambient-background" aria-hidden="true">
   <div class="ambient-haze"></div>
+  <div class="ambient-pointer-glow"></div>
   <div class="ambient-grain"></div>
-  <svg class="ambient-shapes" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" fill="none">
-    <g class="drift-shape shape-one">
-      <path d="m1050 80 250 90 75 260-250 110-195-175Z" />
-      <path d="m1050 80 75 460m175-370-370 195m445 65-325-350" class="shape-facet" />
-    </g>
-    <g class="drift-shape shape-two">
-      <path d="m-115 580 260-110 165 235-120 250-260-90Z" />
-      <path d="m145 470 45 485m120-250-380 160" class="shape-facet" />
-    </g>
-    <g class="drift-shape shape-three">
-      <circle cx="1250" cy="920" r="200" />
-      <ellipse cx="1250" cy="920" rx="145" ry="200" transform="rotate(-30 1250 920)" />
-    </g>
-  </svg>
+  {layers.map((layer, index) => (
+    <svg class={`ambient-stars stars-${layer.name}`} viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" fill="currentColor">
+      {Array.from({ length: layer.count }, (_, star) => (
+        <circle cx={coordinate(star + index * 101 + 1) * 1440} cy={coordinate(star + index * 101 + 501) * 1000} r={layer.radius} opacity={layer.opacity} />
+      ))}
+    </svg>
+  ))}
 </div>
+
+<script>
+  const background = document.querySelector<HTMLElement>('.ambient-background');
+  const motion = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+
+  if (background) {
+    let targetX = 0;
+    let targetY = 0;
+    let x = 0;
+    let y = 0;
+    let frame = 0;
+    let previousTime = 0;
+
+    const paint = () => {
+      // Negative offsets move each depth layer opposite the cursor.
+      background.style.setProperty('--parallax-x', `${-x * 16}px`);
+      background.style.setProperty('--parallax-y', `${-y * 12}px`);
+      background.style.setProperty('--glow-x', `${x * 220}px`);
+      background.style.setProperty('--glow-y', `${y * 150}px`);
+    };
+    const animate = (time: number) => {
+      const elapsed = previousTime ? Math.min(time - previousTime, 64) : 16;
+      previousTime = time;
+      // About a half-second of easing, independent of display refresh rate.
+      const ease = 1 - Math.exp(-elapsed / 480);
+      x += (targetX - x) * ease;
+      y += (targetY - y) * ease;
+      const settled = Math.abs(targetX - x) < 0.001 && Math.abs(targetY - y) < 0.001;
+      if (settled) { x = targetX; y = targetY; }
+      paint();
+      frame = settled ? 0 : requestAnimationFrame(animate);
+      if (settled) previousTime = 0;
+    };
+    const start = () => {
+      if (!frame) frame = requestAnimationFrame(animate);
+    };
+    const reset = () => {
+      background.classList.remove('is-tracking');
+      targetX = targetY = 0;
+      if (motion.matches && !document.hidden) {
+        start();
+      } else {
+        cancelAnimationFrame(frame);
+        frame = previousTime = x = y = 0;
+        paint();
+      }
+    };
+    window.addEventListener('pointermove', (event) => {
+      if (!motion.matches || event.pointerType === 'touch') return;
+      targetX = Math.max(-1, Math.min(1, event.clientX / window.innerWidth * 2 - 1));
+      targetY = Math.max(-1, Math.min(1, event.clientY / window.innerHeight * 2 - 1));
+      background.classList.add('is-tracking');
+      start();
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', reset);
+    window.addEventListener('blur', reset);
+    window.addEventListener('resize', reset, { passive: true });
+    document.addEventListener('visibilitychange', reset);
+    motion.addEventListener('change', reset);
+  }
+</script>
 
 <style>
   .ambient-background { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
   .ambient-haze { position: absolute; inset: 0; background: radial-gradient(ellipse at 88% 23%, #5c7e8f1d, transparent 55%), radial-gradient(ellipse at 0% 86%, #5c7e8f12, transparent 45%); }
-  .ambient-grain { position: absolute; inset: 0; background-image: radial-gradient(#d4dde2 0.55px, transparent 0.7px); background-size: 5px 5px; opacity: .055; mask-image: linear-gradient(115deg, transparent 10%, #000 80%); }
-  .ambient-shapes { width: 100%; height: 100%; stroke: #7095aa; stroke-width: 1; }
-  .drift-shape { transform-box: fill-box; transform-origin: center; animation: drift 36s ease-in-out infinite alternate; }
-  .shape-one { opacity: .19; }
-  .shape-two { opacity: .12; animation-duration: 44s; animation-delay: -12s; }
-  .shape-three { opacity: .11; animation-duration: 50s; animation-delay: -24s; }
-  .shape-facet { opacity: .45; }
-  @keyframes drift { from { transform: translate(-10px, 10px) rotate(-4deg); } to { transform: translate(20px, -16px) rotate(5deg); } }
-  @media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) { .drift-shape { animation: none; } }
-  @media (max-width: 700px) { .ambient-shapes { opacity: .65; } .ambient-grain { opacity: .035; } }
+  .ambient-pointer-glow { position: absolute; left: 50%; top: 42%; width: min(1000px, 120vw); height: min(800px, 110vh); background: radial-gradient(ellipse, #7095aa16, transparent 65%); opacity: 0; transform: translate(calc(-50% + var(--glow-x, 0px)), calc(-50% + var(--glow-y, 0px))); transition: opacity 1.2s ease; }
+  .is-tracking .ambient-pointer-glow { opacity: 1; }
+  .ambient-grain { position: absolute; inset: 0; background-image: radial-gradient(#d4dde2 0.55px, transparent 0.7px); background-size: 5px 5px; opacity: .035; mask-image: linear-gradient(115deg, transparent 10%, #000 80%); }
+  .ambient-stars { position: absolute; inset: -24px; width: calc(100% + 48px); height: calc(100% + 48px); }
+  .ambient-stars { color: #b8ceda; }
+  .stars-far { transform: translate(calc(var(--parallax-x, 0px) * .25), calc(var(--parallax-y, 0px) * .25)); }
+  .stars-middle { transform: translate(calc(var(--parallax-x, 0px) * .55), calc(var(--parallax-y, 0px) * .55)); }
+  .stars-near { transform: translate(var(--parallax-x, 0px), var(--parallax-y, 0px)); }
+  @media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
+    .ambient-stars { transform: none; }
+    .ambient-pointer-glow { display: none; }
+  }
+  @media (max-width: 700px) { .ambient-stars { opacity: .7; } .ambient-grain { opacity: .025; } }
 </style>

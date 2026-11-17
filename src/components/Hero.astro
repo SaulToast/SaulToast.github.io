@@ -1,5 +1,4 @@
 <section class="hero wrap" aria-labelledby="hero-heading">
-  <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-content">
     <p class="eyebrow"><span class="small-rule" aria-hidden="true"></span> Saul Hanson / Game development</p>
     <h1 id="hero-heading">Gameplay <span class="amp">&amp;</span><br />Systems Programmer<span class="heading-dot">.</span></h1>
@@ -11,28 +10,3 @@
     </div>
   </div>
 </section>
-
-<script>
-  const hero = document.querySelector<HTMLElement>('.hero');
-  const glow = hero?.querySelector<HTMLElement>('.hero-glow');
-  const canAnimate = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
-  let frame = 0;
-  if (hero && glow) {
-    hero.addEventListener('pointermove', (event) => {
-      if (!canAnimate.matches) return;
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const rect = hero.getBoundingClientRect();
-        glow.style.setProperty('--pointer-x', `${(event.clientX - rect.left - rect.width / 2) * 0.12}px`);
-        glow.style.setProperty('--pointer-y', `${(event.clientY - rect.top - rect.height / 2) * 0.12}px`);
-      });
-    });
-    const reset = () => {
-      cancelAnimationFrame(frame);
-      glow.style.removeProperty('--pointer-x');
-      glow.style.removeProperty('--pointer-y');
-    };
-    hero.addEventListener('pointerleave', reset);
-    canAnimate.addEventListener('change', reset);
-  }
-</script>

@@ -49,7 +49,7 @@ scripts/build-preview.mjs
 .github/workflows/deploy.yml
 ```
 
-No UI framework, remote fonts, analytics, contact backend, or game source code is included. The small hero script is optional; all navigation and content work without JavaScript.
+No UI framework, remote fonts, analytics, contact backend, or game source code is included. The small background pointer script is optional; all navigation and content work without JavaScript.
 
 ## Edit or add a project
 
@@ -113,7 +113,7 @@ Leave missing values `null`. They appear as labeled, non-interactive placeholder
 - Supplied palette: `#5C7E8F`, `#A2A2A2`, `#D4DDE2`, `#FFFFFF`, on the proposed `#111920` background.
 - Large system-font headings, a short hero, and two equally prominent project cards.
 - Ultrawave first; Lantern of Souls second. Reorder in Markdown.
-- Restrained green/purple project accents; faint texture, gently drifting geometric outlines, and a subtle desktop pointer glow. Shape motion is disabled on touch devices and when reduced motion is preferred.
+- Restrained green/purple project accents; faint texture, three layers of distant stars (172 in total), and a subtle desktop pointer glow. The stars ease opposite the cursor, with no constant drift. Background motion stays within 16px horizontally and 12px vertically from center and settles when the cursor stops. Touch devices, reduced-motion mode, and JavaScript-disabled browsers use the static background. Tune depth and easing in `src/components/AmbientBackground.astro`.
 - Single-column phone layout, visible keyboard focus, a skip link, and reduced-motion/touch fallbacks.
 - Hero introduction uses the spec's draft wording and is labeled as a draft. About, descriptions, and contact details remain explicit placeholders.
 

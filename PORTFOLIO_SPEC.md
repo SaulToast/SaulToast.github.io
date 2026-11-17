@@ -380,7 +380,7 @@ Official references:
 - [ ] Initialize Astro project with static output and minimal dependencies.
 - [ ] Define global colors, typography, spacing, and responsive width rules.
 - [ ] Build header, footer, hero, and **two featured-project cards** using supplied reference images.
-- [ ] Implement a tasteful mouse glow/background movement, with reduced-motion and mobile fallbacks.
+- [x] Implement a tasteful mouse glow/background movement, with reduced-motion and mobile fallbacks.
 - [ ] Make the homepage usable on desktop and mobile.
 - [ ] Use clearly labeled placeholder copy where exact wording is missing.
 - [ ] Show me the result and identify what still needs design approval **before** building deeper content.
@@ -479,3 +479,7 @@ Confirmed public contact destinations supplied by the owner:
 ## Appendix B — Initial prompt to give a coding agent
 
 > Read `PORTFOLIO_SPEC.md` and inspect the images in `references/`. Implement **Milestone A only**: a responsive Astro homepage with the specified color system, concise hero, navigation, two large featured project cards using the supplied reference artwork, and tasteful motion with accessibility fallbacks. Keep project content modular for later integration with an Astro content collection. Do not invent content or expose private game repositories. Run the build and explain how to preview the site. Stop after Milestone A and report which design choices need review.
+
+### Pointer-driven background follow-up
+
+The owner requested a quieter interpretation of https://codepen.io/sacsam005/pen/BaJmaXy: small, faint stars set further behind the content, with movement opposite the mouse instead of constant travel. The shared background now uses three static SVG star layers with capped, gently eased inverse parallax (at most 16px horizontally and 12px vertically from center in the closest layer). The owner subsequently requested stars in place of all geometric outlines, a few more stars, and slightly stronger visibility. The background now contains 172 stars (previously 122), with modestly increased sizes and opacity; geometric outlines and automatic drifting are removed. A broad, low-opacity glow follows the cursor. Motion settles when the cursor stops, resets on leaving the page, and remains static on touch devices, without JavaScript, and with reduced motion enabled. This is a local visual iteration; publication remains a later milestone.
