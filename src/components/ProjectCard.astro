@@ -1,0 +1,39 @@
+---
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { projectUrl } from '../lib/projects';
+interface Props { project: CollectionEntry<'projects'>; index: number; }
+const { project, index } = Astro.props;
+const { data } = project;
+---
+<article class={`project-card accent-${data.accent}`} aria-labelledby={`title-${project.id}`}>
+  <a class="project-card-link" href={projectUrl(project.id)} aria-labelledby={`title-${project.id}`}>
+  <figure class="project-art">
+    <Picture
+      src={data.cover}
+      alt={data.coverAlt}
+      formats={['webp']}
+      fallbackFormat="jpg"
+      width={1200}
+      widths={[480, 768, 1200]}
+      sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 1280px) calc((100vw - 96px) / 2), 572px"
+      loading="lazy"
+      decoding="async"
+    />
+    <figcaption>{data.coverCaption}</figcaption>
+  </figure>
+  <div class="project-info">
+    <div class="project-title-row">
+      <h3 id={`title-${project.id}`}>{data.title}</h3>
+      <span class="project-number mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+    </div>
+    <p class="discipline">{data.discipline}</p>
+    <ul class="tags" aria-label={`${data.title} tools`}>
+      <li>{data.engine}</li>
+      {data.languages.map((language) => <li>{language}</li>)}
+    </ul>
+    <p class="project-summary">{data.summaryIsPlaceholder && <span class="placeholder-label">Placeholder</span>} {data.summary}</p>
+    <div class="project-status"><span>Explore project <span aria-hidden="true">↗</span></span>{!data.published && <span class="case-study-status">Case study in progress</span>}</div>
+  </div>
+  </a>
+</article>

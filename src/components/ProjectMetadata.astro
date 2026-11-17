@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { project: CollectionEntry<'projects'>; }
+const { data } = Astro.props.project;
+const items = [
+  ['Engine / framework', data.engine],
+  ['Languages', data.languages.join(', ')],
+  ['Technical focus', data.discipline],
+  ['My role', data.role],
+  ['Team', data.team],
+  ['Status', data.status],
+  ['Timeline', data.period],
+].filter(([, value]) => value);
+---
+<section class="project-facts" aria-labelledby="facts-heading">
+  <h2 id="facts-heading" class="eyebrow">At a glance</h2>
+  <dl>{items.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+</section>

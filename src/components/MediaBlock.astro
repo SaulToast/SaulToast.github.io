@@ -1,0 +1,13 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Props { image: ImageMetadata; alt: string; caption: string; eager?: boolean; }
+const { image, alt, caption, eager = false } = Astro.props;
+---
+<figure class="media-block">
+  <Picture src={image} alt={alt} formats={['webp']} fallbackFormat="jpg"
+    width={Math.min(image.width, 1600)} widths={[480, 800, 1200, 1600].filter(width => width <= image.width)}
+    sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 1100px) calc(100vw - 96px), 960px"
+    loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} decoding="async" />
+  <figcaption>{caption}</figcaption>
+</figure>

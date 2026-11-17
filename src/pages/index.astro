@@ -1,0 +1,24 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Hero from '../components/Hero.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import About from '../components/About.astro';
+import { getFeaturedProjects } from '../lib/projects';
+const projects = await getFeaturedProjects();
+---
+<SiteLayout>
+  <Hero />
+  <section id="work" class="work-section wrap" aria-labelledby="work-heading">
+    <div class="section-heading">
+      <div><p class="eyebrow">Selected work</p><h2 id="work-heading">Games &amp; the systems behind them<span class="heading-dot">.</span></h2></div>
+      <span class="section-count mono">{String(projects.length).padStart(2, '0')} projects</span>
+    </div>
+    {projects.length > 0 ? (
+      <div class="project-grid">{projects.map((project, index) => <ProjectCard project={project} index={index} />)}</div>
+    ) : (
+      <div class="empty-state"><p>Project case studies are in preparation.</p><p>Approved work and technical breakdowns will appear here.</p></div>
+    )}
+    <p class="work-note"><span aria-hidden="true">↳</span> Project descriptions, personal contributions, and technical breakdowns are being prepared.</p>
+  </section>
+  <About />
+</SiteLayout>

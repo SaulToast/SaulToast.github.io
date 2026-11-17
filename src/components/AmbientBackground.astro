@@ -1,0 +1,33 @@
+<div class="ambient-background" aria-hidden="true">
+  <div class="ambient-haze"></div>
+  <div class="ambient-grain"></div>
+  <svg class="ambient-shapes" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" fill="none">
+    <g class="drift-shape shape-one">
+      <path d="m1050 80 250 90 75 260-250 110-195-175Z" />
+      <path d="m1050 80 75 460m175-370-370 195m445 65-325-350" class="shape-facet" />
+    </g>
+    <g class="drift-shape shape-two">
+      <path d="m-115 580 260-110 165 235-120 250-260-90Z" />
+      <path d="m145 470 45 485m120-250-380 160" class="shape-facet" />
+    </g>
+    <g class="drift-shape shape-three">
+      <circle cx="1250" cy="920" r="200" />
+      <ellipse cx="1250" cy="920" rx="145" ry="200" transform="rotate(-30 1250 920)" />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .ambient-background { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  .ambient-haze { position: absolute; inset: 0; background: radial-gradient(ellipse at 88% 23%, #5c7e8f1d, transparent 55%), radial-gradient(ellipse at 0% 86%, #5c7e8f12, transparent 45%); }
+  .ambient-grain { position: absolute; inset: 0; background-image: radial-gradient(#d4dde2 0.55px, transparent 0.7px); background-size: 5px 5px; opacity: .055; mask-image: linear-gradient(115deg, transparent 10%, #000 80%); }
+  .ambient-shapes { width: 100%; height: 100%; stroke: #7095aa; stroke-width: 1; }
+  .drift-shape { transform-box: fill-box; transform-origin: center; animation: drift 36s ease-in-out infinite alternate; }
+  .shape-one { opacity: .19; }
+  .shape-two { opacity: .12; animation-duration: 44s; animation-delay: -12s; }
+  .shape-three { opacity: .11; animation-duration: 50s; animation-delay: -24s; }
+  .shape-facet { opacity: .45; }
+  @keyframes drift { from { transform: translate(-10px, 10px) rotate(-4deg); } to { transform: translate(20px, -16px) rotate(5deg); } }
+  @media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) { .drift-shape { animation: none; } }
+  @media (max-width: 700px) { .ambient-shapes { opacity: .65; } .ambient-grain { opacity: .035; } }
+</style>

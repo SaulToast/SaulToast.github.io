@@ -1,0 +1,17 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+import { getVisibleProjects } from '../../lib/projects';
+
+export const getStaticPaths = (async () => {
+  const projects = await getVisibleProjects();
+  return projects.map((project, index) => ({
+    params: { slug: project.id },
+    props: { project, next: projects.length > 1 ? projects[(index + 1) % projects.length] : undefined },
+  }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { project, next } = Astro.props;
+---
+<ProjectLayout project={project} next={next} />

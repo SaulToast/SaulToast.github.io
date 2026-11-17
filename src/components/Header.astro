@@ -1,0 +1,14 @@
+---
+const home = import.meta.env.BASE_URL;
+---
+<header class="site-header wrap">
+  <a class="wordmark" href={home} aria-label="Saul Hanson — home">
+    <span class="monogram" aria-hidden="true">sh<span>.</span></span>
+    <span>Saul Hanson</span>
+  </a>
+  <nav aria-label="Main navigation">
+    <a href={`${home}#work`}>Work</a>
+    <a href={`${home}#about`}>About</a>
+  </nav>
+  <span class="header-note mono" aria-hidden="true">Game development portfolio</span>
+</header>

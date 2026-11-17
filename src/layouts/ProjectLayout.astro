@@ -1,0 +1,65 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import SiteLayout from './SiteLayout.astro';
+import MediaBlock from '../components/MediaBlock.astro';
+import VideoLoop from '../components/VideoLoop.astro';
+import ProjectMetadata from '../components/ProjectMetadata.astro';
+import { projectUrl } from '../lib/projects';
+import '../styles/project.css';
+interface Props { project: CollectionEntry<'projects'>; next?: CollectionEntry<'projects'>; }
+const { project, next } = Astro.props;
+const { data } = project;
+const { Content, headings } = await render(project);
+const sections = headings.filter(heading => heading.depth === 2);
+const home = import.meta.env.BASE_URL;
+---
+<SiteLayout title={`${data.title} — Saul Hanson`} description={`${data.title}: ${data.discipline}. ${data.summary}`}>
+  <article class={`project-page wrap accent-${data.accent}`}>
+    <header class="project-hero">
+      <a class="back-link" href={`${home}#work`}><span aria-hidden="true">←</span> All projects</a>
+      <p class="eyebrow">Game development / Project case study</p>
+      <h1>{data.title}<span class="heading-dot">.</span></h1>
+      <p class="project-intro">{data.discipline}</p>
+      <p class="project-description">{data.summaryIsPlaceholder && <span class="placeholder-label">Placeholder</span>} {data.summary}</p>
+      {!data.published && <p class="draft-banner">Case study in progress — descriptions, credits, and technical details are awaiting approved copy.</p>}
+    </header>
+    <div class="project-body">
+      <aside class="project-sidebar">
+        <nav class="project-toc" aria-label="On this page">
+          <p class="eyebrow">On this page</p>
+          <a href="#facts-heading">At a glance</a>
+          {sections.map(section => <a href={`#${section.slug}`}>{section.text}</a>)}
+          <a href="#project-media">Gallery &amp; demonstrations</a>
+        </nav>
+      </aside>
+      <div class="project-main">
+        <MediaBlock image={data.cover} alt={data.coverAlt} caption={data.coverCaption} eager />
+        <ProjectMetadata project={project} />
+        <div class="case-study-prose"><Content /></div>
+        <section id="project-media" class="project-media" aria-labelledby="media-heading">
+          <p class="eyebrow">A closer look</p>
+          <h2 id="media-heading">Gallery &amp; demonstrations</h2>
+          {data.media.length > 0 ? (
+            <div class="media-gallery">
+              {data.media.map((media, index) => media.type === 'image' ?
+                <MediaBlock image={media.image} alt={media.alt} caption={media.caption} /> :
+                <VideoLoop media={media} id={`video-${index}`} />
+              )}
+            </div>
+          ) : (
+            <div class="media-placeholder">
+              <span class="placeholder-label">Media placeholder</span>
+              <h3>Room to show the work.</h3>
+              <p>Gameplay captures and system demonstrations will appear here once approved footage is available.</p>
+            </div>
+          )}
+        </section>
+        {data.links.length > 0 && <section class="project-links" aria-label="Project links">{data.links.map(link => <a class="text-link" href={link.url}>{link.label} <span aria-hidden="true">↗</span></a>)}</section>}
+      </div>
+    </div>
+    <nav class="project-pagination" aria-label="Project navigation">
+      <a href={`${home}#work`}><span class="eyebrow">Selected work</span><span>← All projects</span></a>
+      {next && <a href={projectUrl(next.id)}><span class="eyebrow">Next project</span><span>{next.data.title} →</span></a>}
+    </nav>
+  </article>
+</SiteLayout>
