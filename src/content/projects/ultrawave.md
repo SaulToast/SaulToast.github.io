@@ -10,7 +10,7 @@ team: Independent game project
 period: Started May 2024
 cover: ../../assets/ultrawave-reference.png
 coverAlt: "Ultrawave menu with neon green lettering and wireframe terrain on a dark background."
-coverCaption: Supplied menu screenshot
+coverCaption: Main menu screenshot
 accent: green
 featured: true
 order: 1

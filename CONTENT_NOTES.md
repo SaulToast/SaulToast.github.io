@@ -1,6 +1,19 @@
 # Case-study content notes
 
-The current project summaries, roles, contributions, and About copy are based on the supplied `saul_hanson_resume.pdf` and confirmed facts in `PORTFOLIO_SPEC.md`. They are factual draft copy for local review. Both projects remain unpublished.
+The current project summaries, roles, and contributions are based on the supplied `saul_hanson_resume.pdf` and confirmed facts in `PORTFOLIO_SPEC.md`. They are factual draft copy for local review. Both projects remain unpublished.
+
+## Milestone C — About copy review
+
+The owner is happy with the current visual design and has requested the next phase of detailed content work. The About section now uses a lightly shortened version of the owner's own draft, preserving a personal first-person voice. This editorial version is ready for review; it is not blanket approval of the remaining site copy.
+
+User-supplied facts and interests:
+
+- Computer science at Brigham Young University, with an emphasis in **Animation and Games**; graduating in **April 2027**.
+- Particular interest in gameplay and systems programming, with enjoyment of game design.
+- Interest in the way disciplines combine, intentional design, simple mechanics with deep gameplay, and technical systems that make complex experiences intuitive.
+- Storytelling through play; Hollow Knight, Metroid Prime, and Breath of the Wild as exploration/world examples, and Xenoblade Chronicles and The Last of Us as character/story examples.
+
+Use this voice as guidance for future copy: direct, personal, specific, and grounded in the owner's interests. Keep project details tied to the owner's notes and confirmed contributions. Remaining Milestone C work includes reviewing other copy, detailed technical notes, actual media, contribution clarity, and publication permissions.
 
 ## Source boundaries
 

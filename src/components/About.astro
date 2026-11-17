@@ -1,11 +1,29 @@
+---
+import { Picture } from 'astro:assets';
+import portrait from '../assets/saul_portrait.jpg';
+---
 <section id="about" class="about-section wrap" aria-labelledby="about-heading">
   <div>
     <p class="eyebrow">Beyond the screen</p>
     <h2 id="about-heading">A little about me<span class="heading-dot">.</span></h2>
+    <div class="about-portrait">
+      <Picture
+        src={portrait}
+        alt="Saul Hanson outdoors in front of the mountains."
+        formats={['webp']}
+        fallbackFormat="jpg"
+        width={560}
+        widths={[280, 560, 840]}
+        sizes="(max-width: 700px) 240px, 280px"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
   </div>
   <div class="about-content">
-    <p class="about-lead">Gameplay &amp; systems programming.</p>
-    <p class="about-copy">I study computer science at Brigham Young University, with an emphasis in Animation and Game Development. My work includes independent development in MonoGame and collaborative gameplay programming in Unreal Engine 5.</p>
+    <p class="about-copy">I'm a computer science student at Brigham Young University with an emphasis in Animation and Games, graduating in April 2027. I'm particularly interested in gameplay and systems programming, but I also enjoy being involved in game design.</p>
+    <p class="about-copy">What draws me to game development is how different disciplines come together to create an experience. I love games where everything feels intentional: simple mechanics that create deep gameplay, and technical systems that make complex experiences feel intuitive.</p>
+    <p class="about-copy">I also love storytelling, especially when it's woven into playing. Hollow Knight, Metroid Prime, and Breath of the Wild reward me for exploring and understanding their worlds. Xenoblade Chronicles and The Last of Us have stayed with me through their characters and stories. I want to bring that same care and intentionality to the gameplay systems I build.</p>
     <div class="toolkit">
       <h3 class="eyebrow">Tools behind the projects</h3>
       <ul class="toolkit-list" aria-label="Confirmed project technologies">
@@ -14,3 +32,14 @@
     </div>
   </div>
 </section>
+
+<style>
+  .about-portrait { width: min(280px, 100%); margin-top: 28px; overflow: hidden; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); }
+  .about-portrait :global(picture) { display: block; }
+  .about-portrait :global(img) { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 50% 70%; }
+  .about-content { align-self: center; }
+  .about-content > .about-copy:first-child { margin-top: 0; }
+  @media (max-width: 700px) {
+    .about-portrait { width: min(240px, 100%); margin-top: 24px; }
+  }
+</style>

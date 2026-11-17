@@ -1,6 +1,6 @@
 ---
 title: Lantern of Souls
-summary: "A stealth-focused BYU capstone game built in Unreal Engine 5."
+summary: "A stealth and horror-focused BYU capstone game built in Unreal Engine 5."
 summaryIsPlaceholder: false
 discipline: Gameplay systems & collaborative development
 engine: Unreal Engine 5
@@ -10,7 +10,7 @@ team: "10+ collaborators across programming, art, and animation"
 period: Started April 2026
 cover: ../../assets/lantern-of-souls-reference.jpeg
 coverAlt: "Illustrated stone hall with a luminous purple portal and a figure holding a warm glowing light."
-coverCaption: Supplied environment illustration
+coverCaption: Key art illustration
 accent: purple
 featured: true
 order: 2
