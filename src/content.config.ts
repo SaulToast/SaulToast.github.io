@@ -6,7 +6,10 @@ const mediaUrl = z.string().refine((value) => /^(\/(?!\/)|https:\/\/)/.test(valu
 const externalUrl = z.url().refine((value) => value.startsWith('https://'), 'Use an HTTPS URL.');
 
 const projects = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+  loader: glob({
+    pattern: ['**/*.{md,mdx}', '!**/portfolio-technical-breakdown.md'],
+    base: './src/content/projects',
+  }),
   schema: ({ image }) => z.object({
     title: z.string().min(1),
     summary: z.string().min(1),
@@ -23,6 +26,8 @@ const projects = defineCollection({
     // Drafts can appear only in an explicitly requested local preview.
     published: z.boolean().default(false),
     preview: z.boolean().default(false),
+    inlineMedia: z.boolean().default(false),
+    draftNote: z.string().min(1).optional(),
     role: z.string().min(1).optional(),
     team: z.string().min(1).optional(),
     status: z.string().min(1).optional(),

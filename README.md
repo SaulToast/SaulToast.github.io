@@ -36,7 +36,7 @@ npm run preview
 src/
   assets/                Supplied artwork, optimized by Astro at build time
   components/            Shared UI, AmbientBackground, ProjectMetadata, MediaBlock, VideoLoop
-  content/projects/      One Markdown file per project
+  content/projects/      One Markdown or MDX file per project, plus excluded source notes
   content.config.ts      Validated metadata schema
   layouts/SiteLayout.astro
   layouts/ProjectLayout.astro
@@ -54,7 +54,7 @@ No UI framework, remote fonts, analytics, contact backend, or game source code i
 ## Edit or add a project
 
 1. Add approved media under `src/assets/`.
-2. Create `src/content/projects/project-name.md`. Its filename becomes its content ID and `/projects/project-name/` route. Use lowercase hyphenated filenames.
+2. Create `src/content/projects/project-name.md` (or `.mdx` for inline components). Its filename becomes its content ID and `/projects/project-name/` route. Use lowercase hyphenated filenames.
 3. Use the existing entries as the metadata template. Required fields are `title`, `summary`, `discipline`, `engine`, `languages`, `cover`, `coverAlt`, and `coverCaption`. `cover` is relative to the Markdown file. The schema checks image existence and nonempty text.
 4. Set `featured: true` and adjust `order` to place it on the homepage. Lower numbers come first.
 5. Keep `published: false` while the content or media is unapproved. Set `preview: true` to include it in the local mockup; leave that false for drafts that should stay hidden everywhere.
@@ -93,7 +93,20 @@ media:
 
 Images and posters resolve relative to the Markdown file and are optimized by Astro. Put local video and WebVTT files under `public/media/`; reference them as `/media/...`. HTTPS video sources also work. Supply accurate captions/transcripts for speech or important audio; omit `tracks` when not applicable. The player uses native controls, a poster, and `preload="none"`. It never autoplays, including when looping, and offers a direct video link. No dummy media files or sources are included.
 
-Keep personally implemented features distinct from team accomplishments. Do not promote speculative topics from the spec into claims. Unknown credits, dates, project status, metrics, and contact details remain unset. The images are labeled accurately as a menu screenshot and an environment illustration, not gameplay demonstrations.
+### Inline media in a technical case study
+
+`src/content/projects/ultrawave.mdx` places media beside the relevant explanations using reusable Astro components. MDX retains Markdown headings and prose while supporting component imports. Set `inlineMedia: true` to omit the separate end-of-page gallery, and optionally provide `draftNote` for a project-specific introduction note.
+
+- `DevelopmentClip`: an early-development video with a poster, controls, title, and caption. Clips do not autoplay or loop.
+- `MediaBlock`: an optimized screenshot with alt text and a caption.
+- `MediaPlaceholder`: a labeled space for a future capture; replace it with the actual media component when available.
+- `ProcessFlow`: a responsive sequence diagram rendered as HTML/CSS.
+
+Original Ultrawave captures remain in `src/assets/Ultrawave/`. Playback copies live in `public/media/ultrawave/`; posters are under `src/assets/Ultrawave/posters/`. Videos were resized to 1280 pixels wide at 30 fps, encoded with H.264 CRF 24 and AAC audio, and prepared for progressive playback with `faststart`. Full durations and available audio were preserved. Images and videos are loaded on demand rather than autoplaying a page of clips.
+
+The supplied `portfolio-technical-breakdown.md` is retained as source material and explicitly excluded from the project collection. Edit the curated `ultrawave.mdx` to change the website; external-repository source anchors from the notes are not published as project links.
+
+Keep personally implemented features distinct from team accomplishments. Do not promote speculative topics from the spec into claims. Unknown credits, dates, project status, and metrics remain unset. Early captures are labeled as development footage; the Lantern of Souls illustration remains labeled as reference artwork.
 
 ## Contact and résumé
 
@@ -115,9 +128,9 @@ Leave missing values `null`. They appear as labeled, non-interactive placeholder
 - Ultrawave first; Lantern of Souls second. Reorder in Markdown.
 - Restrained green/purple project accents; faint texture, three layers of distant stars (172 in total), and a subtle desktop pointer glow. The stars ease opposite the cursor, with no constant drift. Background motion stays within 16px horizontally and 12px vertically from center and settles when the cursor stops. Touch devices, reduced-motion mode, and JavaScript-disabled browsers use the static background. Tune depth and easing in `src/components/AmbientBackground.astro`.
 - Single-column phone layout, visible keyboard focus, a skip link, and reduced-motion/touch fallbacks.
-- Hero introduction uses the spec's draft wording and is labeled as a draft. About, descriptions, and contact details remain explicit placeholders.
+- The About copy and contact details use the owner's supplied information. Ultrawave now has a detailed case study based on the supplied technical breakdown; remaining media spaces and unfinished copy are labeled.
 
-The first review approved the general colors/layout, image hover treatment, and captions. The follow-up implementation adds dedicated project pages, larger explanation text, the work link beneath the introduction, and subtle background depth. Final copy, feature contributions, and media still need to be supplied; nothing in the scaffold asserts unconfirmed accomplishments.
+The first review approved the general colors/layout, image hover treatment, and captions. The follow-up implementation adds dedicated project pages, larger explanation text, the work link beneath the introduction, and subtle background depth. Ultrawave's case study includes five supplied development clips, an early gameplay screenshot, and a title-screen cover. See `CONTENT_NOTES.md` for remaining capture needs and attribution boundaries.
 
 ## GitHub Pages
 

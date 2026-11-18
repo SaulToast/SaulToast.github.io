@@ -1,0 +1,9 @@
+---
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+---
+<aside class="media-placeholder inline-media-placeholder" aria-label={`Media placeholder: ${title}`}>
+  <span class="placeholder-label">Media to add</span>
+  <p class="media-placeholder-title">{title}</p>
+  <p>{description}</p>
+</aside>

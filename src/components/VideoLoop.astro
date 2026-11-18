@@ -2,17 +2,22 @@
 import { getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 type Video = Extract<CollectionEntry<'projects'>['data']['media'][number], { type: 'video' }>;
-interface Props { media: Video; id: string; }
-const { media, id } = Astro.props;
+interface Props { media: Video; id: string; label?: string; badge?: string; }
+const { media, id, label, badge } = Astro.props;
 const poster = await getImage({ src: media.poster, width: Math.min(media.poster.width, 1600), format: 'webp' });
 const localUrl = (url: string) => url.startsWith('/') ? `${import.meta.env.BASE_URL}${url.slice(1)}` : url;
 ---
 <figure class="media-block">
   <video controls playsinline preload="none" loop={media.loop} muted={media.loop}
-    poster={poster.src} width={media.poster.width} height={media.poster.height} aria-describedby={`${id}-caption`}>
+    poster={poster.src} width={media.poster.width} height={media.poster.height} aria-label={label} aria-describedby={`${id}-caption`}>
     {media.sources.map(source => <source src={localUrl(source.src)} type={source.type} />)}
     {media.tracks.map((track, index) => <track kind="captions" src={localUrl(track.src)} srclang={track.language} label={track.label} default={index === 0} />)}
     Your browser cannot play this video. <a href={localUrl(media.sources[0].src)}>Open the video directly</a>.
   </video>
-  <figcaption id={`${id}-caption`}>{media.caption} <a href={localUrl(media.sources[0].src)}>Open video <span aria-hidden="true">↗</span></a></figcaption>
+  <figcaption id={`${id}-caption`}>
+    {badge && <span class="media-stage">{badge}</span>}
+    {label && <strong class="media-caption-title">{label}</strong>}
+    <span>{media.caption}</span>
+    <a href={localUrl(media.sources[0].src)}>Open video <span aria-hidden="true">↗</span></a>
+  </figcaption>
 </figure>

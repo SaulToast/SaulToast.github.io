@@ -1,0 +1,8 @@
+---
+import type { ImageMetadata } from 'astro';
+import VideoLoop from './VideoLoop.astro';
+interface Props { id: string; src: string; poster: ImageMetadata; title: string; caption: string; }
+const { id, src, poster, title, caption } = Astro.props;
+---
+<VideoLoop id={id} label={title} badge="Early development"
+  media={{ type: 'video', sources: [{ src, type: 'video/mp4' }], poster, caption, loop: false, tracks: [] }} />

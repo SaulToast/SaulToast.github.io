@@ -1,6 +1,6 @@
 # Case-study content notes
 
-The current project summaries, roles, and contributions are based on the supplied `saul_hanson_resume.pdf` and confirmed facts in `PORTFOLIO_SPEC.md`. They are factual draft copy for local review. Both projects remain unpublished.
+The current project summaries, roles, and contributions are based on the supplied `saul_hanson_resume.pdf`, confirmed facts in `PORTFOLIO_SPEC.md`, and the owner's new `src/content/projects/portfolio-technical-breakdown.md`. The detailed breakdown takes precedence for Ultrawave's attribution and development history. Both projects remain unpublished.
 
 ## Milestone C — About copy review
 
@@ -17,12 +17,14 @@ Use this voice as guidance for future copy: direct, personal, specific, and grou
 
 ## Source boundaries
 
-- Ultrawave: the résumé supports the co-developer/game programmer role, C#/MonoGame, weapon logic, enemy AI, asset management, client-server communication, the particle system with modular animations and 16 parameters, and the tiling tool with a custom wave function collapse algorithm and 50+ tiles.
+- Ultrawave: the technical breakdown supports enemy behaviors and conditions, weapon implementation and shared design, reusable gameplay components, drops/pickups, upgrade-system contributions, asset integration, and Creatable spawning. Three programmers shared game design. Physics-engine authorship belongs to a teammate; Saul integrated with and debugged it. Art, UI, and music were created by other contributors.
+- The original Pixi-based particle integration and wave function collapse background generation are historical contributions. A co-developer rewrote the particle system using the original as its base, and backgrounds were later reworked. The current rewrite's pooling/configuration features and older résumé parameter/tile counts are not attributed to Saul's original implementation on the page.
+- The breakdown's source anchors point into another project. They remain in the untouched source notes, which are excluded from Astro's project collection; the website contains curated prose rather than broken source links.
 - Lantern of Souls: the résumé supports the BYU capstone role, Unreal Engine 5 with C++/Blueprints, variable movement speeds and gameplay abilities, spatial audio/sound occlusion prototyping, and collaboration with 10+ people across programming, art, and animation.
 - Start dates are taken from the résumé. Current completion/release status is not inferred from its “Present” dates.
 - The résumé’s numerical descriptions are used as supplied, not as independent performance benchmarks. No frame rates, timings, improvement percentages, or measured outcomes have been added.
 - Potential topics in the spec that the résumé does not confirm—such as soul mechanics, sprint/crouch, particular shader effects, and production audio propagation—are not asserted as implemented contributions.
-- The supplied menu screenshot and environment illustration remain accurately labeled reference assets. Their availability in this local preview does not establish publication rights.
+- Ultrawave's title screen is the card and project cover. Supplied early captures are explicitly labeled development footage; the Lantern of Souls environment illustration remains reference artwork.
 
 ## Notes still needed
 
@@ -30,11 +32,13 @@ Rough notes are enough; these do not need to be polished prose.
 
 ### Ultrawave
 
-1. What does the player do, and what is the main goal/gameplay loop?
-2. For the particle system: how are particles updated/rendered, how do animation modules work, and which parameters best demonstrate the design? What was one difficult constraint or tradeoff?
-3. For procedural tiling: how are compatibility rules defined, how does generation proceed, and what happens when constraints contradict each other?
-4. Which other system should get a deeper case study? Describe your responsibility, the problem, the approach, and an outcome you can substantiate.
-5. Which screenshots, clips, diagrams, and excerpts may be shown publicly? Provide existing file paths and a short description of each capture.
+1. A current gameplay overview reel and an enemy attack cycle, ideally the Elephant with edited state labels.
+2. Contrasting weapons and a before/choice/after upgrade demonstration, including an active LightBlade upgrade if available.
+3. A drop/pickup or projectile-to-field sequence, plus an atlas-to-runtime animation example.
+4. Historical particle footage from Saul's original integration and a step-by-step original background-generation capture. The tiling debug clip alone does not establish compatibility rules or contradiction handling.
+5. One concrete iteration story: the problem, the behavior or component changed, and the observed result. No performance claims or invented outcomes have been added.
+
+These needs are represented by eight inline media placeholders in `src/content/projects/ultrawave.mdx`.
 
 ### Lantern of Souls
 
@@ -49,6 +53,8 @@ Rough notes are enough; these do not need to be polished prose.
 - Approved screenshots and video posters: `src/assets/<project-name>/`.
 - Short MP4/WebM clips and optional WebVTT captions: `public/media/<project-name>/`.
 - For every item: identify the project/feature, describe what it demonstrates, and confirm permission to publish it.
-- No footage or explanatory diagrams have been invented. The gallery remains a placeholder until actual media is supplied.
+- Ultrawave media is placed inline: Grabbler footage in Enemy AI, building upgrades in Upgrades & progression, collider testing in Physics integration & debugging, and the early screenshot/stars/tiling clips in Development history. The gameplay, attack, and spawning diagrams summarize supplied technical notes.
+- Original videos remain under `src/assets/Ultrawave/`. Website copies under `public/media/ultrawave/` total approximately 14.4 MB, compared with 180 MB of originals. They preserve full duration and available audio; generated posters are under `src/assets/Ultrawave/posters/`.
+- The supplied concept images and alternate main-menu image are not currently displayed. Lantern of Souls still has its gallery placeholder.
 
 See `README.md` for the frontmatter format. The remaining content can be added without duplicating page templates.

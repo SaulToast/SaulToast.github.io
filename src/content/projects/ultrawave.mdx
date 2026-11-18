@@ -1,0 +1,204 @@
+---
+title: Ultrawave
+summary: "A top-down space combat game about surviving escalating encounters and developing a ship through combat upgrades and hub progression."
+summaryIsPlaceholder: false
+discipline: Gameplay engineering & collaborative game design
+engine: MonoGame
+languages: ["C#"]
+role: Gameplay Engineer & Co-Designer
+team: "3 programmers, with game design shared across the team"
+period: Started May 2024
+cover: ../../assets/Ultrawave/UltrawaveTitleScreen.png
+coverAlt: "Ultrawave title screen with glowing white lettering over dark green space and wireframe terrain."
+coverCaption: Ultrawave title screen
+accent: green
+featured: true
+order: 1
+published: false
+preview: true
+inlineMedia: true
+draftNote: "Development case study — early captures are labeled throughout. Spaces for additional system demonstrations are marked below."
+---
+
+import MediaBlock from '../../components/MediaBlock.astro';
+import DevelopmentClip from '../../components/DevelopmentClip.astro';
+import MediaPlaceholder from '../../components/MediaPlaceholder.astro';
+import ProcessFlow from '../../components/ProcessFlow.astro';
+import earlyGame from '../../assets/Ultrawave/UltrawaveInGameEarly.png';
+import grabblerPoster from '../../assets/Ultrawave/posters/grabbler-ai-early.webp';
+import upgradesPoster from '../../assets/Ultrawave/posters/building-upgrade-early.webp';
+import physicsPoster from '../../assets/Ultrawave/posters/physics-early.webp';
+import starsPoster from '../../assets/Ultrawave/posters/stars-early.webp';
+import tilingPoster from '../../assets/Ultrawave/posters/background-tiling-early.webp';
+
+## Game overview
+
+Ultrawave is a top-down space combat game built in C# on a custom game framework using MonoGame. Players fight through escalating enemy encounters, collect resources and experience, and develop their ship through combat upgrades and hub progression. A run moves from survival into a boss encounter before returning the player to the hub.
+
+I am one of three developers. All three of us collaborate on game design, including enemies, weapons, buildings, and progression. My engineering work turns those designs into enemy behaviors, weapon implementations, and reusable gameplay components.
+
+<ProcessFlow label="The gameplay loop" steps={['Hub & loadout', 'Survive & upgrade', 'Boss encounter', 'Collect & return']} />
+
+<MediaPlaceholder title="Gameplay overview reel" description="Space for a short sequence showing the hub, combat, an upgrade choice, and the boss encounter. The early development captures below document individual systems." />
+
+## My contributions
+
+<ul className="contribution-grid">
+  <li><strong>Enemy AI</strong> Enemy concepts, behavior implementations, and transition conditions.</li>
+  <li><strong>Weapons</strong> Co-designing every weapon with the team and writing the weapon code.</li>
+  <li><strong>Reusable gameplay</strong> Behaviors, conditions, drops, pickups, and components assembled through Creatable factories.</li>
+  <li><strong>Progression</strong> Shared building and progression design, plus code contributions to the upgrade system.</li>
+  <li><strong>Integration</strong> Connecting art assets and gameplay features to shared spawning, collision, and lifecycle systems.</li>
+  <li><strong>Prototyping</strong> The original Pixi-based particle integration, wave function collapse background generation, and earlier gameplay experiments.</li>
+</ul>
+
+<p className="credit-note"><strong>Team credit:</strong> Game design was collaborative. Art, UI, and music were created by other contributors. My teammate authored the physics engine; my work involved integrating with and debugging it. My co-developer later rewrote the particle system using my original implementation as its base.</p>
+
+<div id="technical-breakdowns"></div>
+
+## Enemy AI
+
+I contributed enemy concepts and implemented enemy behaviors and transition conditions. Each enemy needs movement, attacks, animation, and warning effects to work together, so its intent is readable and the player has a chance to react.
+
+The state-based framework composes those actions into attack sequences. A state can move, fire, stop, change animation, or begin a telegraph. Conditions determine when to transition based on time, distance, energy, health, or animation completion.
+
+### Early Grabbler behavior
+
+This early capture shows Grabblers moving back and forth around the player in a circle. It documents an earlier behavior iteration; it is not a demonstration of the current Elephant attack sequence described below.
+
+<DevelopmentClip id="grabbler-ai-early" src="/media/ultrawave/grabbler-ai-early.mp4" poster={grabblerPoster} title="Grabbler AI — early movement behavior" caption="Grabblers circle the player and move back and forth. My contribution: enemy behavior implementation, as part of the team's shared enemy design work." />
+
+### Coordinating an attack sequence
+
+The Elephant approaches, stops to telegraph a dash, charges a defined distance, and then recovers. Splitting that sequence into states lets movement, the visual warning, attack completion, and cooldown participate in the same behavior flow.
+
+<ProcessFlow label="Elephant attack sequence" steps={['Approach', 'Telegraph', 'Charge', 'Recover']} />
+
+The same framework supports different constraints: the Hunter recharges when its energy is depleted, Fury can interrupt its normal behavior with dormancy, and Iron King chooses attacks with their own telegraph and recovery states.
+
+<details>
+<summary>Implementation detail: behaviors and conditions</summary>
+
+`AIBehaviorStateMachine` tracks the active state and an optional global override. Each `BState` contains behaviors and conditional transitions. Conditions are evaluated before behaviors run, and a matching condition may choose randomly among several destination states. `BBehavior` supplies enter, update, and exit hooks, allowing actions to be composed without putting an entire enemy's logic into a single update method.
+
+Global transitions can interrupt the current behavior. The override is cleared after transitioning; Fury re-arms its dormancy transition when needed.
+
+</details>
+
+<MediaPlaceholder title="Current enemy attack cycle" description="Space for an Elephant approach, telegraph, charge, and recovery capture, with state labels added in the video edit." />
+
+## Weapons
+
+I helped design every weapon with the team and wrote the weapon code. Each weapon controls its firing pattern while sharing input, lifecycle, owner, and spawning interfaces. The objects created by an attack then combine travel, collision, damage, lifetime, and presentation components.
+
+This supports weapons with different engineering requirements:
+
+- **Axiom:** semi-automatic fire with an unlockable staged charge shot.
+- **Disperser:** spread fire that can become a single slug, with slug damage incorporating pellet count.
+- **Arclance:** a returning projectile and unlockable orbiting secondary projectiles.
+- **LightBlade:** a sustained beam with damage ticks and modifiers such as pulse, pull, and turret beams.
+
+### Keeping active attacks in sync
+
+A weapon upgrade can affect an attack that already exists. LightBlade explicitly refreshes the damage of its active beam when damage upgrades apply; certain upgrades also require refreshing turret beams. Updating the weapon's data alone would leave these active attacks using values they had already cached.
+
+<details>
+<summary>Implementation detail: the shared weapon contract</summary>
+
+`IWeapon` covers press/release input, updating, service binding, owner synchronization, cleanup, and a bullet-fired event. Optional secondary behavior uses `ISecondaryFireWeapon`. `BaseWeapon` handles shared projectile quantity and scale behavior, creating spread volleys by cloning spawn descriptors and rotating their target directions. Target and muzzle-position interfaces provide aiming information from the owner.
+
+</details>
+
+<MediaPlaceholder title="Contrasting weapons & active upgrades" description="Space for normal versus charged fire, a returning or orbiting projectile, and a LightBlade upgrade applied while the beam is active." />
+
+## Reusable gameplay components
+
+I wrote many of the behaviors, conditions, drops, pickups, and other components used by Ultrawave's gameplay. These run on a shared entity/component framework built around `WeatheredObject`, which combines movement, collision, behavior, and presentation in individual objects.
+
+### Assembling objects with Creatables
+
+I worked with Creatables to assemble and spawn gameplay objects. These factory methods construct a `WeatheredObject` from reusable components: a projectile needs travel, collision, damage, lifetime, and graphics; an enemy adds AI, targeting, health, and drops.
+
+<ProcessFlow label="From gameplay action to a spawned object" steps={['Spawn descriptor', 'Entity service & factory', 'Creatable + components', 'Initialize & register']} />
+
+`SpawnDescriptor` carries an archetype name, transform, persistence information, and an `Extra` dictionary of creation parameters. The factory resolves the archetype to its construction function. The entity service then binds services, initializes the object's family, registers colliders, and raises the spawn event.
+
+### Connecting combat to drops and pickups
+
+My drop and pickup work connects combat outcomes to resources. `DropOnDeathComponent` responds to a health death event. `DropComponent` rolls chances and quantities, then requests drop archetypes through the entity service. `AddResourceWithDelayComponent` gates pickup availability with a timer.
+
+This gives each component a distinct responsibility while letting enemy death, spawning, pickup timing, and progression cooperate through shared systems.
+
+<MediaPlaceholder title="Enemy death → resource drop → pickup" description="Space for a short sequence showing the drop and pickup components in action, or a projectile spawning a timed field on destruction." />
+
+## Upgrades & progression
+
+I collaborated on progression and building design and contributed code to the upgrade system. The game connects two progression layers: hub upgrades and choices made during a run.
+
+- **Hub progression** stores upgrade requirements, costs, claim state, and effects. Upgrade nodes can represent branches, but the current weapon tiers use linear chains.
+- **Run progression** combines generic, dash, and equipped-weapon options. Eligibility checks filter choices against progression, weapon identity, stack limits, prerequisites, and incompatible tags before weighted selection.
+
+Capability interfaces such as `IAdjustDamage` let effects work with supported weapon features. This connects upgrade selection to the weapon implementations and their changes in behavior.
+
+<DevelopmentClip id="building-upgrade-early" src="/media/ultrawave/building-upgrade-early.mp4" poster={upgradesPoster} title="Building upgrades — early development capture" caption="An early look at building and upgrade interaction. My contribution was shared progression/building design and upgrade-system code; the UI and artwork were created by other contributors." />
+
+<MediaPlaceholder title="An upgrade's visible effect on combat" description="Space for a before → upgrade choice → after comparison, such as Disperser's slug mode or Arclance's orbiting projectiles." />
+
+## Physics integration & debugging
+
+The physics engine was implemented by my teammate. My contribution was using it from gameplay code, connecting spawned objects and collision behavior, and debugging how those systems interacted.
+
+The early capture below makes that distinction visible: the debug box represents the ship's actual collider, and the resolver prevents it from intersecting another box. The ship artwork and collision geometry are separate parts of the interaction.
+
+<DevelopmentClip id="physics-early" src="/media/ultrawave/physics-early.mp4" poster={physicsPoster} title="Collision resolution — early debug capture" caption="The ship's outlined debug collider meets another box without intersecting it. This documents early collision-resolver testing. Physics-engine authorship belongs to my teammate; my work involved gameplay integration and debugging." />
+
+<details>
+<summary>Shared framework context</summary>
+
+The physics service gathers nearby candidates with a quadtree before detailed collision checks. It includes discrete and continuous paths, layer masks, raycasts, overlap queries, and physical response. Continuous handling is especially relevant to fast projectiles.
+
+`WeatheredObject` supports parent/child hierarchies for attached hitboxes and effects. The entity service queues creation, destruction, and despawning, keeping collider registration aligned with object lifecycle. These are shared framework systems I worked with, rather than a claim that I authored the physics engine or every service.
+
+</details>
+
+## Asset integration
+
+I integrated art assets into the gameplay pipeline, connecting sprite sheets and animation data to runtime objects and effects. My contribution was the technical integration; asset creation and UI implementation were outside my role.
+
+The atlas pipeline reads packed frame metadata—including rotation, trimmed offsets, original size, and pivots—to preserve sprite placement and animation alignment. Category wrappers expose named sprites and animations to gameplay code, while collision geometry is loaded separately from exported hitbox data.
+
+<MediaPlaceholder title="From packed asset to gameplay object" description="Space for a packed atlas, named animation frames, and the corresponding in-game animation, with hitbox outlines showing how visual and collision data meet." />
+
+## Original particle integration
+
+I implemented Ultrawave's original particle integration using the Pixi particle system. That earlier implementation became the base for a later rewrite by my co-developer.
+
+<p className="credit-note"><strong>Development history:</strong> My contribution was the original integration. The current system's pooling, configuration, and cached settings belong to the subsequent rewrite and are not presented here as features I authored.</p>
+
+<MediaPlaceholder title="Original particle effects" description="Space for footage of my earlier Pixi-based implementation. A future original/current comparison will credit the subsequent rewrite to my co-developer." />
+
+## Development history
+
+Earlier builds show the work behind the finished presentation: testing gameplay with placeholder visuals, trying bounded background effects, and debugging generated tiles. These captures document prototypes and intermediate results rather than the current game’s final appearance.
+
+### Gameplay before the art pass
+
+This early screenshot records a stage when gameplay objects were represented largely by colored cubes and other placeholder visuals. It provides context for the implementation work that happened before the art was integrated.
+
+<MediaBlock image={earlyGame} alt="Early Ultrawave gameplay with colored block-like objects, simple placeholder visuals, a star background, and debug-style HUD elements." caption="Early development screenshot, before the main art pass. Colored cubes represented gameplay objects while systems were being built and tested." />
+
+### A bounded field of stars
+
+An early solution generated stars within a radius around the player and moved that region with them. This explored how to give the background a star field without generating an unbounded number of stars as the player traveled.
+
+<DevelopmentClip id="stars-early" src="/media/ultrawave/stars-early.mp4" poster={starsPoster} title="Stars — an early player-centered background" caption="The star region follows the player, keeping generation within a bounded radius. This is an early background experiment, not the final background implementation." />
+
+### Background tiling experiments
+
+I wrote a wave function collapse algorithm for background tile generation. That background system and other prototypes were subsequently reworked as the game evolved.
+
+This capture shows tiles against a white debugging background while we were trying to make the tiling work. It documents the development process; it does not, by itself, demonstrate the original algorithm's constraint rules or generation steps.
+
+<DevelopmentClip id="background-tiling-early" src="/media/ultrawave/background-tiling-early.mp4" poster={tilingPoster} title="Background tiling — early debug view" caption="Background tiles appear against a white field during tiling debugging. My earlier contribution included wave function collapse background generation; the background was later reworked." />
+
+<MediaPlaceholder title="Background generation, step by step" description="Space for a tileset → generation process → output sequence from the original implementation, with its compatibility rules and contradiction handling explained." />
