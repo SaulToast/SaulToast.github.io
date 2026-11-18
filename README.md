@@ -102,7 +102,9 @@ Images and posters resolve relative to the Markdown file and are optimized by As
 - `MediaPlaceholder`: a labeled space for a future capture; replace it with the actual media component when available.
 - `ProcessFlow`: a responsive sequence diagram rendered as HTML/CSS.
 
-Original Ultrawave captures remain in `src/assets/Ultrawave/`. Playback copies live in `public/media/ultrawave/`; posters are under `src/assets/Ultrawave/posters/`. Videos were resized to 1280 pixels wide at 30 fps, encoded with H.264 CRF 24 and AAC audio, and prepared for progressive playback with `faststart`. Full durations and available audio were preserved. Images and videos are loaded on demand rather than autoplaying a page of clips.
+Original Ultrawave recordings remain locally in `src/assets/Ultrawave/` and are ignored by Git; back them up separately. The site builds without those originals. Tracked playback copies live in `public/media/ultrawave/`; posters are under `src/assets/Ultrawave/posters/`. Videos were resized to 1280 pixels wide at 30 fps, encoded with H.264 CRF 24 and AAC audio, and prepared for progressive playback with `faststart`. Full durations and available audio were preserved. Images and videos are loaded on demand rather than autoplaying a page of clips.
+
+Homepage cover cropping is controlled in `src/styles/global.css`: `.project-art img` sets `aspect-ratio` and `object-fit`, and the accent-specific rules set `object-position`. Ultrawave uses `.accent-green .project-art img`, now centered at `50% 50%` (horizontal, vertical). This affects the card only; project-page images retain their full aspect ratios.
 
 The supplied `portfolio-technical-breakdown.md` is retained as source material and explicitly excluded from the project collection. Edit the curated `ultrawave.mdx` to change the website; external-repository source anchors from the notes are not published as project links.
 

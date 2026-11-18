@@ -55,6 +55,7 @@ These needs are represented by eight inline media placeholders in `src/content/p
 - For every item: identify the project/feature, describe what it demonstrates, and confirm permission to publish it.
 - Ultrawave media is placed inline: Grabbler footage in Enemy AI, building upgrades in Upgrades & progression, collider testing in Physics integration & debugging, and the early screenshot/stars/tiling clips in Development history. The gameplay, attack, and spawning diagrams summarize supplied technical notes.
 - Original videos remain under `src/assets/Ultrawave/`. Website copies under `public/media/ultrawave/` total approximately 14.4 MB, compared with 180 MB of originals. They preserve full duration and available audio; generated posters are under `src/assets/Ultrawave/posters/`.
-- The supplied concept images and alternate main-menu image are not currently displayed. Lantern of Souls still has its gallery placeholder.
+- Both supplied concept paintings appear at full width in Development history, credited to other contributors. Artist names have not been supplied. The alternate main-menu image is not displayed. Lantern of Souls still has its gallery placeholder.
+- Original MP4 recordings in `src/assets/Ultrawave/` are local-only and ignored by Git. Keep a separate backup of these originals. The optimized `public/media/ultrawave/` videos and source images/posters remain tracked. Removing originals from the current tree does not remove copies in earlier commits.
 
 See `README.md` for the frontmatter format. The remaining content can be added without duplicating page templates.

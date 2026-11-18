@@ -9,3 +9,6 @@ dist/
 !.env.example
 *.log
 
+# Keep original recordings locally; commit optimized public/media copies instead.
+/src/assets/Ultrawave/*.mp4
+
