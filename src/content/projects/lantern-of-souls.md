@@ -5,7 +5,7 @@ summaryIsPlaceholder: false
 discipline: Gameplay systems & collaborative development
 engine: Unreal Engine 5
 languages: ["C++"]
-role: Game Programmer — BYU Capstone
+role: Game Programmer & Designer — BYU Capstone
 team: "10+ collaborators across programming, art, and animation"
 period: Started April 2026
 cover: ../../assets/lantern-of-souls-reference.jpeg
@@ -14,39 +14,38 @@ coverCaption: Key art illustration
 accent: purple
 featured: true
 order: 2
-published: false
+published: true
 preview: true
 ---
 
 ## Game overview
 
-Lantern of Souls is a stealth-focused game developed as a BYU capstone project in Unreal Engine 5. I collaborated with a team of more than 10 people, including programmers, artists, and animators, to iterate on the game’s systems.
+Lantern of Souls is a horror and stealth-focused game being developed as a BYU capstone project in Unreal Engine 5. I'm part of a team of more than 10 people across programming, art, and animation.
 
-**Gameplay description pending:** Describe the player’s objective and the core gameplay loop. The image above is an environment illustration, not a capture of implemented mechanics.
+In Lantern of Souls, you play as a soul master guiding a small, glowing soul companion through an ancient temple. Corrupted spirits roam its halls, threatening to consume the soul. To reach the temple’s inner chamber, you must explore the ruins and light five braziers to unlock the final door.
+
+The game centers on stealth and finding opportunities to move safely. Crouch behind objects, slip into cracks in the walls, or run when you need to escape. Two patrolling guards attack when they spot you, while a tall, spotlight-like enemy watches over the center of the temple and alerts the guards to your location.
+
+The game is still in active development, so its story and gameplay elements are continually being adjusted and refined.
 
 ## My contributions
 
-My role is Game Programmer on the BYU capstone team. My work includes:
+My role is Game Programmer and Designer. My work so far includes:
 
-- Player movement and gameplay abilities using C++ and Blueprints, including variable movement speeds.
-- Prototypes for spatial audio and sound occlusion, exploring how sound can support player awareness in a stealth-focused game.
-
-The game is a collaborative project. The sections below describe my programming work; the audio work is identified as prototyping rather than a completed production system.
+- Prototyping player movement and gameplay abilities using C++ and Blueprints.
+- Prototyping spatial audio and sound occlusion to explore how sound can support player awareness and horror ambience.
+- Helping other programmers with code architecture, consistent coding practices, and reusable systems.
 
 ## Technical breakdowns
 
-### Player movement and gameplay abilities
+### Player movement and gameplay ability prototypes
 
-I developed player movement and gameplay abilities in Unreal Engine 5 using C++ and Blueprints. This included support for variable movement speeds.
-
-**Implementation notes pending:** Identify the exact abilities I implemented, explain how the C++ and Blueprint responsibilities are divided, and describe a movement constraint or design decision. Add approved footage demonstrating the behavior.
+During preproduction, I tested different player movement options and gameplay abilities in Unreal Engine 5 using C++ and Blueprints. This included exploring variable movement speeds with both a controller and keyboard and mouse.
 
 ### Spatial audio and sound occlusion prototypes
 
-I prototyped spatial audio and sound occlusion systems to explore how sound could help players understand their surroundings in a stealth-focused game.
+I also prototyped spatial audio and sound occlusion to explore how sound could help players understand their surroundings during stealth gameplay and contribute to the game's horror atmosphere.
 
-**Implementation notes pending:** Explain the approaches tested, how the prototype represents occlusion, and what the investigation showed. Clarify which parts were retained, revised, or remained experimental. An audio demonstration and an accompanying text explanation are still needed.
+## Ongoing work
 
-## Takeaways
-
-**Reflection pending:** Describe a technical or collaboration challenge, the tradeoff involved, and what I learned. Include only outcomes that can be supported by the project work.
+I'm currently working on continued gamepad support and control remapping. As development progresses, I'll expand this case study with more detail on the prototypes, the design decisions behind them, and what I learned along the way.

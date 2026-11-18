@@ -1,6 +1,6 @@
 # Case-study content notes
 
-The current project summaries, roles, and contributions are based on the supplied `saul_hanson_resume.pdf`, confirmed facts in `PORTFOLIO_SPEC.md`, and the owner's new `src/content/projects/portfolio-technical-breakdown.md`. The detailed breakdown takes precedence for Ultrawave's attribution and development history. Both projects remain unpublished.
+The current project summaries, roles, and contributions are based on the supplied `saul_hanson_resume.pdf`, confirmed facts in `PORTFOLIO_SPEC.md`, and the owner's new `src/content/projects/portfolio-technical-breakdown.md`. The detailed breakdown takes precedence for Ultrawave's attribution and development history. Both project entries are currently marked `published: true`, making them eligible for production builds. Actual deployment status is not established by these notes.
 
 ## Milestone C — About copy review
 
@@ -59,3 +59,11 @@ These needs are represented by eight inline media placeholders in `src/content/p
 - Original MP4 recordings in `src/assets/Ultrawave/` are local-only and ignored by Git. Keep a separate backup of these originals. The optimized `public/media/ultrawave/` videos and source images/posters remain tracked. Removing originals from the current tree does not remove copies in earlier commits.
 
 See `README.md` for the frontmatter format. The remaining content can be added without duplicating page templates.
+
+## Lantern of Souls — public case-study review
+
+The owner's November 2026 page edits confirm a Game Programmer and Designer role, movement/ability and audio/occlusion prototyping, code-architecture collaboration, and current gamepad/control-remapping work. These notes supplement the résumé and take precedence for the updated role and current work. The page retains the owner's `published: true` setting.
+
+The review corrects typos and phrasing, aligns the role metadata with the body, and replaces author-facing writing prompts with an Ongoing work section and a visitor-facing media notice. Prototype outcomes, retained production systems, specific ability implementations, and a detailed gameplay loop are still unconfirmed; no additional claims were inserted. The internal questions above remain for future expansion.
+
+The page remains `lantern-of-souls.md` until inline components are needed. Renaming it to `lantern-of-souls.mdx` preserves its content ID and `/projects/lantern-of-souls/` URL. MDX is already configured; future footage can use the same inline components as Ultrawave. Do not keep both extensions for this entry at the same time.

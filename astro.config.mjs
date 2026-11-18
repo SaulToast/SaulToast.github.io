@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 
 export default defineConfig({
-  site: 'https://saultoast.github.io',
+  site: 'https://saulhanson.com',
   output: 'static',
   integrations: [mdx()],
   trailingSlash: 'always',
